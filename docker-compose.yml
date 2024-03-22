@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  todoapi:
+    container_name: todosApi
+    image: ${DOCKER_REGISTRY-}todoapi
+    build:
+      context: .
+      dockerfile: TodoList/Dockerfile
+
+  todoDatabase:
+    image: postgres:latest
+    container_name: todosDatabase
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=todos
+    ports:
+      - 5432:5432
