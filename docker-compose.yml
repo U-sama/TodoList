@@ -7,6 +7,12 @@ services:
     build:
       context: .
       dockerfile: TodoList/Dockerfile
+    depends_on:
+      todoDatabase:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+      - 8081:8081
 
   todoDatabase:
     image: postgres:latest
@@ -17,3 +23,8 @@ services:
       - POSTGRES_DB=todos
     ports:
       - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
